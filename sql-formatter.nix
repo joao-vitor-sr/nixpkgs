@@ -1,19 +1,21 @@
 with import <nixpkgs> { };
 
 stdenv.mkDerivation rec {
-  name = "pretty-php";
+  name = "sql-formatter";
   version = "latest";
 
   src = pkgs.fetchurl {
     url =
-      "https://github.com/lkrms/pretty-php/releases/download/v0.4.64/pretty-php.phar";
-    sha256 = "sha256-VlI6pWAf1j7+2BXJ+dUXhBt5Lfy+sj3g0c3xvuFDaGk=";
+      "https://github.com/sql-formatter-org/sql-formatter/archive/refs/tags/v15.3.2.zip";
+    sha256 = "sha256-RATI0Hep1t/+ld/lJw278a47I1/TsdcOHl4OvJ/IY+Y=";
   };
 
+  nativeBuildInputs = [ unzip ];
   phases = [ "installPhase" "patchPhase" ];
   installPhase = ''
     mkdir -p $out/bin
-    cp $src $out/bin/pretty-php
-    chmod +x $out/bin/pretty-php
+    unzip $src
+    cp sql-formatter-15.3.2/bin/sql-formatter-cli.cjs $out/bin/sql-formatter
+    chmod +x $out/bin/sql-formatter
   '';
 }
